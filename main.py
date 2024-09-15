@@ -3,27 +3,27 @@ from time import sleep
 
 
 def inp():
-    print("Enter puzzle in format:")
-    print()
-    print("  <-> ")
-    print("  nn<>")
-    print("o=uun ")
-    print("n   !n")
-    print("!n<>uu")
-    print("uu  <>")
-    print()
-    print("Where <> <-> is horizontal, nu is vertical, o= is the key")
+    # print("Enter puzzle in format:")
+    # print()
+    # print("  <-> ")
+    # print("  nn<>")
+    # print("o=uun ")
+    # print("n   !n")
+    # print("!n<>uu")
+    # print("uu  <>")
+    # print()
+    # print("Where <> <-> is horizontal, nu is vertical, o= is the key")
 
     r = ["", "", "", "", "", ""]
-    for i in range(6):
-        r[i] = list(input("Row " + str(i) + ": "))
+    # for i in range(6):
+    #     r[i] = list(input("Row " + str(i) + ": "))
 
-    # r[0] = list("nn  n ")n
-    # r[1] = list("uu<>! ")
-    # r[2] = list("o=n u ")
-    # r[3] = list("n u<>n")
-    # r[4] = list("u<>n !")
-    # r[5] = list("<> u u")
+    r[0] = list("nn  n ")
+    r[1] = list("uu<>! ")
+    r[2] = list("o=n u ")
+    r[3] = list("n u<>n")
+    r[4] = list("u<>n !")
+    r[5] = list("<> u u")
 
     # r[0] = list("  --- ")
     # r[1] = list("  !!--")
@@ -102,9 +102,27 @@ def show(rows):
     for i in range(len(rows)):
         res += "║ "
         for j in range(len(rows[i])):
-            res += rows[i][j]
+            if rows[i][j] == " ":
+                res += " "
+            if rows[i][j] == "<":
+                res += "╺"
+            elif rows[i][j] == ">":
+                res += "╸"
+            elif rows[i][j] == "═":
+                res += "━"
+            elif rows[i][j] == "n":
+                res += "╻"
+            elif rows[i][j] == "u":
+                res += "╹"
+            elif rows[i][j] == "║":
+                res += "┃"
+            elif rows[i][j] == "o":
+                res += "O"
+            elif rows[i][j] == "=":
+                res += "━"
+
             if rows[i][j] == "<" or rows[i][j] == "═" or rows[i][j] == "o":
-                res += "═"
+                res += "━"
             else:
                 res += " "
         res += "║\n"
