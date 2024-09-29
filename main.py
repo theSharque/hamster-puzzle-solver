@@ -1,36 +1,21 @@
-from idlelib.run import flush_stdout
 from time import sleep
 
 
 def inp():
-    # print("Enter puzzle in format:")
-    # print()
-    # print("  <-> ")
-    # print("  nn<>")
-    # print("o=uun ")
-    # print("n   !n")
-    # print("!n<>uu")
-    # print("uu  <>")
-    # print()
-    # print("Where <> <-> is horizontal, nu is vertical, o= is the key")
+    print("Enter puzzle in format:")
+    print()
+    print("  <-> ")
+    print("  nn<>")
+    print("o=uun ")
+    print("n   !n")
+    print("!n<>uu")
+    print("uu  <>")
+    print()
+    print("Where <> <-> is horizontal, nu is vertical, o= is the key")
 
     r = ["", "", "", "", "", ""]
-    # for i in range(6):
-    #     r[i] = list(input("Row " + str(i) + ": "))
-
-    r[0] = list("nn  n ")
-    r[1] = list("uu<>! ")
-    r[2] = list("o=n u ")
-    r[3] = list("n u<>n")
-    r[4] = list("u<>n !")
-    r[5] = list("<> u u")
-
-    # r[0] = list("  --- ")
-    # r[1] = list("  !!--")
-    # r[2] = list("==!!! ")
-    # r[3] = list("!   !!")
-    # r[4] = list("!!--!!")
-    # r[5] = list("!!  --")
+    for i in range(6):
+        r[i] = list(input("Row " + str(i) + ": "))
     return r
 
 
@@ -226,7 +211,6 @@ def main():
                             for n in range(len(shows)):
                                 print("\033[0;0H")
                                 print(shows[len(shows) - 1 - n])
-                                flush_stdout()
                                 sleep(0.3)
 
                     else:
