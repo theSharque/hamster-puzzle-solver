@@ -91,39 +91,36 @@ def blocks_to_rows(blocks):
 
 
 def show(rows):
-    res = "╔═════════════╗\n"
+    res = "╔" + "═" * (len(rows[0]) * 2 - 1) + "╗\n"
+    
     for i in range(len(rows)):
-        res += "║ "
+        res += "║"
         for j in range(len(rows[i])):
-            if rows[i][j] == " ":
+            char = rows[i][j]
+            if char == " ":
                 res += " "
-            if rows[i][j] == "<":
+            elif char == "<":
                 res += "╺"
-            elif rows[i][j] == ">":
+            elif char == ">":
                 res += "╸"
-            elif rows[i][j] == "═":
+            elif char == "═":
                 res += "━"
-            elif rows[i][j] == "n":
+            elif char == "n":
                 res += "╻"
-            elif rows[i][j] == "u":
+            elif char == "u":
                 res += "╹"
-            elif rows[i][j] == "║":
+            elif char == "║":
                 res += "┃"
-            elif rows[i][j] == "o":
+            elif char == "o":
                 res += "O"
-            elif rows[i][j] == "=":
-                res += "━"
-
-            if rows[i][j] == "<" or rows[i][j] == "═" or rows[i][j] == "o":
+            elif char in ["<", "═", "o"]:
                 res += "━"
             else:
                 res += " "
         res += "║\n"
-
-    res += "╚═════════════╝\n"
+    
+    res += "╚" + "═" * (len(rows[0]) * 2 - 1) + "╝\n"
     return res
-
-
 def rows_to_str(rows):
     res = ""
     for i in rows:
