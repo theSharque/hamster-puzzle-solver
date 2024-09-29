@@ -35,39 +35,32 @@ def inp():
 
 
 def rows_to_blocks(rows):
-    blocks = []
+    blocks = set()
     for i in range(len(rows)):
         for j in range(len(rows[i])):
-            if rows[i][j] == "<" and j + 2 < len(rows[i]) and rows[i][j + 2] == ">":
-                blocks.append([i, j, "---"])
+            if rows[i][j] == "<" and j + 2 < len(rows[i]) and rows[i][j + 1] == ">" and rows[i][j + 2] == ">":
+                blocks.add((i, j, "---"))
                 rows[i][j] = " "
                 rows[i][j + 1] = " "
                 rows[i][j + 2] = " "
-
-            if rows[i][j] == "<" and j + 1 < len(rows[i]) and rows[i][j + 1] == ">":
-                blocks.append([i, j, "--"])
+            elif rows[i][j] == "<" and j + 1 < len(rows[i]) and rows[i][j + 1] == ">":
+                blocks.add((i, j, "--"))
                 rows[i][j] = " "
                 rows[i][j + 1] = " "
-
-            if rows[i][j] == "o" and j + 1 < len(rows[i]) and rows[i][j + 1] == "=":
-                blocks.append([i, j, "=="])
+            elif rows[i][j] == "o" and j + 1 < len(rows[i]) and rows[i][j + 1] == "=":
+                blocks.add((i, j, "=="))
                 rows[i][j] = " "
                 rows[i][j + 1] = " "
-
-            if rows[i][j] == "n" and i + 2 < len(rows) and rows[i + 2][j] == "u":
-                blocks.append([i, j, "!!!"])
+            elif rows[i][j] == "n" and i + 2 < len(rows) and rows[i + 1][j] == "u" and rows[i + 2][j] == "u":
+                blocks.add((i, j, "!!!"))
                 rows[i][j] = " "
                 rows[i + 1][j] = " "
                 rows[i + 2][j] = " "
-
-            if rows[i][j] == "n" and i + 1 < len(rows) and rows[i + 1][j] == "u":
-                blocks.append([i, j, "!!"])
+            elif rows[i][j] == "n" and i + 1 < len(rows) and rows[i + 1][j] == "u":
+                blocks.add((i, j, "!!"))
                 rows[i][j] = " "
                 rows[i + 1][j] = " "
-
-    return blocks
-
-
+    return list(blocks)
 def blocks_to_rows(blocks):
     rows = [[" ", " ", " ", " ", " ", " "],
             [" ", " ", " ", " ", " ", " "],
