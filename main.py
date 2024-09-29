@@ -62,34 +62,43 @@ def rows_to_blocks(rows):
                 rows[i + 1][j] = " "
     return list(blocks)
 def blocks_to_rows(blocks):
-    rows = [[" ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " "],
-            [" ", " ", " ", " ", " ", " "]]
-
-    for i in range(len(blocks)):
-        if blocks[i][2] == "---":
-            rows[blocks[i][0]][blocks[i][1]] = "<"
-            rows[blocks[i][0]][blocks[i][1] + 1] = "═"
-            rows[blocks[i][0]][blocks[i][1] + 2] = ">"
-        elif blocks[i][2] == "--":
-            rows[blocks[i][0]][blocks[i][1]] = "<"
-            rows[blocks[i][0]][blocks[i][1] + 1] = ">"
-        elif blocks[i][2] == "==":
-            rows[blocks[i][0]][blocks[i][1]] = "o"
-            rows[blocks[i][0]][blocks[i][1] + 1] = "="
-        elif blocks[i][2] == "!!!":
-            rows[blocks[i][0]][blocks[i][1]] = "n"
-            rows[blocks[i][0] + 1][blocks[i][1]] = "║"
-            rows[blocks[i][0] + 2][blocks[i][1]] = "u"
-        elif blocks[i][2] == "!!":
-            rows[blocks[i][0]][blocks[i][1]] = "n"
-            rows[blocks[i][0] + 1][blocks[i][1]] = "u"
+    # Initialize the rows matrix with empty spaces
+    rows = [[" " for _ in range(6)] for _ in range(6)]
+    
+    # Define a mapping from block types to characters
+    block_map = {
+        "---": lambda row, col: (row, col),
+        "--": lambda row, col: (row, col),
+        "==": lambda row, col: (row, col),
+        "!!!": lambda row, col: (row, col),
+        "!!": lambda row, col: (row, col)
+    }
+    
+    # Define the character mappings for each block type
+    char_map = {
+        "---": ("<", "═", ">"),
+        "--": ("<", ">"),
+        "==": ("o", "="),
+        "!!!": ("n", "║", "u"),
+        "!!": ("n", "u")
+    }
+    
+    # Iterate over the blocks and place characters in the rows matrix
+    for block in blocks:
+        row, col = block[0], block[1]
+        char_type = block[2]
+        
+        if char_type in char_map:
+            chars = char_map[char_type]
+            if len(chars) == 3:
+                rows[row][col] = chars[0]
+                rows[row][col + 1] = chars[1]
+                rows[row][col + 2] = chars[2]
+            elif len(chars) == 2:
+                rows[row][col] = chars[0]
+                rows[row][col + 1] = chars[1]
+    
     return rows
-
-
 def show(rows):
     res = "╔═════════════╗\n"
     for i in range(len(rows)):
