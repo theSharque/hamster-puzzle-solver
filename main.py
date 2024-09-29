@@ -122,14 +122,9 @@ def show(rows):
     res += "╚" + "═" * (len(rows[0]) * 2 - 1) + "╝\n"
     return res
 def rows_to_str(rows):
-    res = ""
-    for i in rows:
-        for j in i:
-            res += j
-        res += ','
-    return res[:-1]
-
-
+    # Use a list comprehension to join all elements in each sublist with ','
+    # Then join all sublists with '\n' (or any other delimiter you prefer)
+    return ',\n'.join([''.join(row) for row in rows])
 def str_to_rows(key: str):
     raws = list(key.split(','))
     raws = [list(x) for x in raws]
