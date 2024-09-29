@@ -134,11 +134,7 @@ def rows_to_str(rows):
 
 
 def str_to_rows(key: str):
-    raws = list(key.split(','))
-    raws = [list(x) for x in raws]
-    return raws
-
-
+    return [list(x) for x in key.split(',')]
 def main():
     rows = inp()
     blocks = rows_to_blocks(rows)
