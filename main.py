@@ -36,30 +36,37 @@ def inp():
 
 def rows_to_blocks(rows):
     blocks = set()
-    for i in range(len(rows)):
-        for j in range(len(rows[i])):
-            if rows[i][j] == "<" and j + 2 < len(rows[i]) and rows[i][j + 1] == ">" and rows[i][j + 2] == ">":
-                blocks.add((i, j, "---"))
-                rows[i][j] = " "
-                rows[i][j + 1] = " "
-                rows[i][j + 2] = " "
-            elif rows[i][j] == "<" and j + 1 < len(rows[i]) and rows[i][j + 1] == ">":
-                blocks.add((i, j, "--"))
-                rows[i][j] = " "
-                rows[i][j + 1] = " "
-            elif rows[i][j] == "o" and j + 1 < len(rows[i]) and rows[i][j + 1] == "=":
-                blocks.add((i, j, "=="))
-                rows[i][j] = " "
-                rows[i][j + 1] = " "
-            elif rows[i][j] == "n" and i + 2 < len(rows) and rows[i + 1][j] == "u" and rows[i + 2][j] == "u":
-                blocks.add((i, j, "!!!"))
-                rows[i][j] = " "
-                rows[i + 1][j] = " "
-                rows[i + 2][j] = " "
-            elif rows[i][j] == "n" and i + 1 < len(rows) and rows[i + 1][j] == "u":
-                blocks.add((i, j, "!!"))
-                rows[i][j] = " "
-                rows[i + 1][j] = " "
+    num_rows = len(rows)
+    num_cols = len(rows[0]) if rows else 0
+    
+    for i in range(num_rows):
+        for j in range(num_cols):
+            if rows[i][j] == "<" and j + 2 < num_cols:
+                if rows[i][j + 1] == ">" and rows[i][j + 2] == ">":
+                    blocks.add((i, j, "---"))
+                    for k in range(3):
+                        rows[i][j + k] = " "
+            elif rows[i][j] == "<" and j + 1 < num_cols:
+                if rows[i][j + 1] == ">":
+                    blocks.add((i, j, "--"))
+                    rows[i][j] = " "
+                    rows[i][j + 1] = " "
+            elif rows[i][j] == "o" and j + 1 < num_cols:
+                if rows[i][j + 1] == "=":
+                    blocks.add((i, j, "=="))
+                    rows[i][j] = " "
+                    rows[i][j + 1] = " "
+            elif rows[i][j] == "n" and i + 2 < num_rows:
+                if rows[i + 1][j] == "u" and rows[i + 2][j] == "u":
+                    blocks.add((i, j, "!!!"))
+                    for k in range(3):
+                        rows[i + k][j] = " "
+            elif rows[i][j] == "n" and i + 1 < num_rows:
+                if rows[i + 1][j] == "u":
+                    blocks.add((i, j, "!!"))
+                    rows[i][j] = " "
+                    rows[i + 1][j] = " "
+    
     return list(blocks)
 def blocks_to_rows(blocks):
     rows = [[" ", " ", " ", " ", " ", " "],
