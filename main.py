@@ -135,11 +135,7 @@ def rows_to_str(rows):
     # Then join all sublists with '\n' (or any other delimiter you prefer)
     return ',\n'.join([''.join(row) for row in rows])
 def str_to_rows(key: str):
-    raws = list(key.split(','))
-    raws = [list(x) for x in raws]
-    return raws
-
-
+    return [list(x) for x in key.split(',')]
 def main():
     rows = inp()
     blocks = rows_to_blocks(rows)
