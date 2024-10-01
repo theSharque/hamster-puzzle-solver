@@ -123,9 +123,14 @@ def show(rows):
     res += "╚" + "═" * (len(rows[0]) * 2 - 1) + "╝\n"
     return res
 def rows_to_str(rows):
-    # Use a list comprehension to join all elements in each sublist with ','
-    # Then join all sublists with '\n' (or any other delimiter you prefer)
-    return ',\n'.join([''.join(row) for row in rows])
+    # Преобразуем каждую строку в списке строк в строку с помощью ',',
+    # собираем все преобразованные строки в один список,
+    # а затем объединяем этот список с '\n'
+    rows_as_strings = []
+    for row in rows:
+        row_str = ','.join(row)
+        rows_as_strings.append(row_str)
+    return ',\n'.join(rows_as_strings)
 def str_to_rows(key: str):
     return [list(x) for x in key.split(',')]
 def main():
