@@ -127,7 +127,10 @@ def rows_to_str(rows):
     # Then join all sublists with '\n' (or any other delimiter you prefer)
     return ',\n'.join([''.join(row) for row in rows])
 def str_to_rows(key: str):
-    return [list(x) for x in key.split(',')]
+    # Удаляем пробелы вокруг запятых и разбиваем строку на элементы
+    elements = key.replace(' ', '').split(',')
+    # Преобразуем каждый элемент в список символов и собираем все в один список
+    return [list(element) for element in elements]
 def main():
     rows = inp()
     blocks = rows_to_blocks(rows)
