@@ -1,4 +1,4 @@
-from time import sleep
+from PIL import Image, ImageDraw
 
 
 def inp():
@@ -20,114 +20,96 @@ def inp():
 
 
 def rows_to_blocks(rows):
-    blocks = set()
-    num_rows = len(rows)
-    num_cols = len(rows[0]) if rows else 0
-    
-    for i in range(num_rows):
-        for j in range(num_cols):
-            if rows[i][j] == "<" and j + 2 < num_cols:
-                if rows[i][j + 1] == ">" and rows[i][j + 2] == ">":
-                    blocks.add((i, j, "---"))
-                    for k in range(3):
-                        rows[i][j + k] = " "
-            elif rows[i][j] == "<" and j + 1 < num_cols:
-                if rows[i][j + 1] == ">":
-                    blocks.add((i, j, "--"))
-                    rows[i][j] = " "
-                    rows[i][j + 1] = " "
-            elif rows[i][j] == "o" and j + 1 < num_cols:
-                if rows[i][j + 1] == "=":
-                    blocks.add((i, j, "=="))
-                    rows[i][j] = " "
-                    rows[i][j + 1] = " "
-            elif rows[i][j] == "n" and i + 2 < num_rows:
-                if rows[i + 1][j] == "u" and rows[i + 2][j] == "u":
-                    blocks.add((i, j, "!!!"))
-                    for k in range(3):
-                        rows[i + k][j] = " "
-            elif rows[i][j] == "n" and i + 1 < num_rows:
-                if rows[i + 1][j] == "u":
-                    blocks.add((i, j, "!!"))
-                    rows[i][j] = " "
-                    rows[i + 1][j] = " "
-    
-    return list(blocks)
-def blocks_to_rows(blocks):
-    # Initialize the rows matrix with empty spaces
-    rows = [[" " for _ in range(6)] for _ in range(6)]
-    
-    # Define a mapping from block types to characters
-    block_map = {
-        "---": lambda row, col: (row, col),
-        "--": lambda row, col: (row, col),
-        "==": lambda row, col: (row, col),
-        "!!!": lambda row, col: (row, col),
-        "!!": lambda row, col: (row, col)
-    }
-    
-    # Define the character mappings for each block type
-    char_map = {
-        "---": ("<", "═", ">"),
-        "--": ("<", ">"),
-        "==": ("o", "="),
-        "!!!": ("n", "║", "u"),
-        "!!": ("n", "u")
-    }
-    
-    # Iterate over the blocks and place characters in the rows matrix
-    for block in blocks:
-        row, col = block[0], block[1]
-        char_type = block[2]
-        
-        if char_type in char_map:
-            chars = char_map[char_type]
-            if len(chars) == 3:
-                rows[row][col] = chars[0]
-                rows[row][col + 1] = chars[1]
-                rows[row][col + 2] = chars[2]
-            elif len(chars) == 2:
-                rows[row][col] = chars[0]
-                rows[row][col + 1] = chars[1]
-    
-    return rows
-def show(rows):
-    res = "╔" + "═" * (len(rows[0]) * 2 - 1) + "╗\n"
-    
+    blocks = []
     for i in range(len(rows)):
-        res += "║"
         for j in range(len(rows[i])):
-            char = rows[i][j]
-            if char == " ":
-                res += " "
-            elif char == "<":
-                res += "╺"
-            elif char == ">":
-                res += "╸"
-            elif char == "═":
-                res += "━"
-            elif char == "n":
-                res += "╻"
-            elif char == "u":
-                res += "╹"
-            elif char == "║":
-                res += "┃"
-            elif char == "o":
-                res += "O"
-            elif char in ["<", "═", "o"]:
-                res += "━"
-            else:
-                res += " "
-        res += "║\n"
-    
-    res += "╚" + "═" * (len(rows[0]) * 2 - 1) + "╝\n"
-    return res
+            if rows[i][j] == "<" and j + 2 < len(rows[i]) and rows[i][j + 2] == ">":
+                blocks.append([i, j, "---"])
+                rows[i][j + 2] = rows[i][j + 1] = rows[i][j] = " "
+
+            if rows[i][j] == "<" and j + 1 < len(rows[i]) and rows[i][j + 1] == ">":
+                blocks.append([i, j, "--"])
+                rows[i][j + 1] = rows[i][j] = " "
+
+            if rows[i][j] == "o" and j + 1 < len(rows[i]) and rows[i][j + 1] == "=":
+                blocks.append([i, j, "=="])
+                rows[i][j + 1] = rows[i][j] = " "
+
+            if rows[i][j] == "n" and i + 2 < len(rows) and rows[i + 2][j] == "u":
+                blocks.append([i, j, "!!!"])
+                rows[i + 2][j] = rows[i + 1][j] = rows[i][j] = " "
+
+            if rows[i][j] == "n" and i + 1 < len(rows) and rows[i + 1][j] == "u":
+                blocks.append([i, j, "!!"])
+                rows[i + 1][j] = rows[i][j] = " "
+
+    return blocks
+
+
+def blocks_to_rows(blocks):
+    rows = [[" ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " "]]
+
+    for i in range(len(blocks)):
+        if blocks[i][2] == "---":
+            rows[blocks[i][0]][blocks[i][1]] = "<"
+            rows[blocks[i][0]][blocks[i][1] + 1] = "-"
+            rows[blocks[i][0]][blocks[i][1] + 2] = ">"
+        elif blocks[i][2] == "--":
+            rows[blocks[i][0]][blocks[i][1]] = "<"
+            rows[blocks[i][0]][blocks[i][1] + 1] = ">"
+        elif blocks[i][2] == "==":
+            rows[blocks[i][0]][blocks[i][1]] = "o"
+            rows[blocks[i][0]][blocks[i][1] + 1] = "="
+        elif blocks[i][2] == "!!!":
+            rows[blocks[i][0]][blocks[i][1]] = "n"
+            rows[blocks[i][0] + 1][blocks[i][1]] = "!"
+            rows[blocks[i][0] + 2][blocks[i][1]] = "u"
+        elif blocks[i][2] == "!!":
+            rows[blocks[i][0]][blocks[i][1]] = "n"
+            rows[blocks[i][0] + 1][blocks[i][1]] = "u"
+    return rows
+
+
 def rows_to_str(rows):
-    # Use a list comprehension to join all elements in each sublist with ','
-    # Then join all sublists with '\n' (or any other delimiter you prefer)
-    return ',\n'.join([''.join(row) for row in rows])
+    res = ""
+    for i in rows:
+        for j in i:
+            res += j
+        res += ','
+    return res[:-1]
+
+
 def str_to_rows(key: str):
-    return [list(x) for x in key.split(',')]
+    raws = list(key.split(','))
+    raws = [list(x) for x in raws]
+    return raws
+
+
+def draw(rows):
+    image = Image.new("RGB", (300, 300), "black")
+    image_draw = ImageDraw.Draw(image)
+    for i in range(len(rows)):
+        for j in range(len(rows[i])):
+            if rows[i][j] == "o" and len(rows[i]) > j + 1 and rows[i][j + 1] == "=":
+                image_draw.ellipse((j * 50, i * 50, (j + 1) * 50, (i + 1) * 50), "yellow", "black", 5)
+                image_draw.rounded_rectangle((j * 50, i * 50 + 20, (j + 2) * 50, i * 50 + 30), 10, "yellow")
+            elif rows[i][j] == "<" and len(rows[i]) > j + 1 and rows[i][j + 1] == ">":
+                image_draw.rounded_rectangle((j * 50, i * 50, (j + 2) * 50, (i + 1) * 50), 20, "green", "black", 5)
+            elif rows[i][j] == "<" and len(rows[i]) > j + 2 and rows[i][j + 2] == ">":
+                image_draw.rounded_rectangle((j * 50, i * 50, (j + 3) * 50, (i + 1) * 50), 20, "green", "black", 5)
+            elif rows[i][j] == "n" and len(rows) > i + 2 and rows[i + 2][j] == "u":
+                image_draw.rounded_rectangle((j * 50, i * 50, (j + 1) * 50, (i + 3) * 50), 20, "red", "black", 5)
+            elif rows[i][j] == "n" and len(rows) > i + 1 and rows[i + 1][j] == "u":
+                image_draw.rounded_rectangle((j * 50, i * 50, (j + 1) * 50, (i + 2) * 50), 20, "red", "black", 5)
+
+    return image
+
+
 def main():
     rows = inp()
     blocks = rows_to_blocks(rows)
@@ -198,24 +180,23 @@ def main():
 
                     if blocks[b][2] == "==" and blocks[b][1] == 4:
                         print("Found solution...")
-                        shows = []
+                        frames = []
                         rows = blocks_to_rows(blocks)
-                        shows.append(show(rows))
+                        frames.append(draw(rows))
                         key = screens[rows_to_str(rows)]
 
                         while key != 'init':
-                            shows.append(show(str_to_rows(key)))
+                            frames.append(draw(str_to_rows(key)))
                             key = screens[key]
 
-                        while True:
-                            for n in range(len(shows)):
-                                print("\033[0;0H")
-                                print(shows[len(shows) - 1 - n])
-                                sleep(0.3)
+                        frames.reverse()
+                        frame_one = frames[0]
+                        frame_one.save("solution.gif", format="GIF", append_images=frames, save_all=True,
+                                       duration=300, loop=0)
+                        return
 
                     else:
                         blocks[b][1] -= 1
-
         i += 1
 
 
