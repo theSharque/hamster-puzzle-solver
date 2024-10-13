@@ -1,6 +1,8 @@
 from PIL import Image, ImageDraw
 from wx.lib.pubsub.py2and3 import BytesIO
 
+from hamster_bot import logger
+
 
 def inp():
     print("Enter puzzle in format:")
@@ -179,7 +181,7 @@ def calc(first_rows, filename=None):
                         screens[key] = parent_key
 
                     if blocks[b][2] == "==" and blocks[b][1] == 4:
-                        print("Found solution...")
+                        logger.info("Found solution...")
                         frames = []
                         rows = blocks_to_rows(blocks)
                         frames.append(draw(rows))
@@ -194,11 +196,11 @@ def calc(first_rows, filename=None):
                         if filename is None:
                             result = BytesIO()
                             frame_one.save(result, format="GIF", append_images=frames, save_all=True,
-                                       duration=500, loop=0)
+                                           duration=500, loop=0)
                             return result.getvalue()
                         else:
                             frame_one.save(filename, format="GIF", append_images=frames, save_all=True,
-                                       duration=500, loop=0)
+                                           duration=500, loop=0)
                         return
 
                     else:
@@ -206,6 +208,10 @@ def calc(first_rows, filename=None):
         i += 1
 
 
-if __name__ == '__main__':
+def main():
     inp_rows = inp()
     calc(inp_rows, "solution.gif")
+
+
+if __name__ == '__main__':
+    main()
