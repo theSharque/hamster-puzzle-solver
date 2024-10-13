@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw
+from wx.lib.pubsub.py2and3 import BytesIO
 
 
 def inp():
@@ -110,9 +111,8 @@ def draw(rows):
     return image
 
 
-def main():
-    rows = inp()
-    blocks = rows_to_blocks(rows)
+def calc(first_rows, filename=None):
+    blocks = rows_to_blocks(first_rows)
     rows = blocks_to_rows(blocks)
     screens = {rows_to_str(rows): 'init'}
 
@@ -191,8 +191,14 @@ def main():
 
                         frames.reverse()
                         frame_one = frames[0]
-                        frame_one.save("solution.gif", format="GIF", append_images=frames, save_all=True,
-                                       duration=300, loop=0)
+                        if filename is None:
+                            result = BytesIO()
+                            frame_one.save(result, format="GIF", append_images=frames, save_all=True,
+                                       duration=500, loop=0)
+                            return result.getvalue()
+                        else:
+                            frame_one.save(filename, format="GIF", append_images=frames, save_all=True,
+                                       duration=500, loop=0)
                         return
 
                     else:
@@ -201,4 +207,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    inp_rows = inp()
+    calc(inp_rows, "solution.gif")
