@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hi! I can solve puzzle from the Hamster, just upload a screenshot to me.")
+    await update.message.reply_text("Привет! Я могу помочь с решением головоломки для Hamster combat. Просто загрузи мне скриншот с головоломкой.")
 
 
 async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -30,11 +30,11 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     out = BytesIO(
         await photo_file.download_as_bytearray(pool_timeout=30, connect_timeout=30, read_timeout=30, write_timeout=30))
-    await update.message.reply_text("Gorgeous! Please wait I need a time to solve it.")
+    await update.message.reply_text("Вуликолепно! Дай мне немного времени, мне нужно подумать...")
 
     image_rows = converter.translate_to_rows(out)
     result = solver.calc(image_rows)
-    await update.message.reply_animation(result, 500, 300, 300, "Here is the solution")
+    await update.message.reply_animation(result, 500, 300, 300, "А вот и решение!")
 
 
 def main() -> None:
