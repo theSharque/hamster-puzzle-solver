@@ -1,6 +1,5 @@
+from io import BytesIO
 from PIL import Image, ImageDraw
-from wx.lib.pubsub.py2and3 import BytesIO
-
 from hamster_bot import logger
 
 
