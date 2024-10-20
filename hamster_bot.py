@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info(f"Access from @{update.effective_user.username}")
     await update.message.reply_text("Привет! Я могу помочь с решением головоломки для Hamster combat. Просто загрузи мне скриншот с головоломкой.")
 
 
