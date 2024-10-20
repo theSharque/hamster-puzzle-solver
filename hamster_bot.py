@@ -58,7 +58,7 @@ def main() -> None:
     )
 
     application.add_handler(conv_handler)
-    application.run_polling(allowed_updates=Update.ALL_TYPES, poll_interval=1)
+    application.run_polling(allowed_updates=Update.ALL_TYPES, poll_interval=10)
 
 
 if __name__ == "__main__":
