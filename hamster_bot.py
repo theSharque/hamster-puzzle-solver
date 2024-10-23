@@ -31,7 +31,7 @@ async def photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     out = BytesIO(
         await photo_file.download_as_bytearray(pool_timeout=30, connect_timeout=30, read_timeout=30, write_timeout=30))
-    await update.message.reply_text("Вуликолепно! Дай мне немного времени, мне нужно подумать...")
+    await update.message.reply_text("Великолепно! Дай мне немного времени, мне нужно подумать...")
 
     image_rows = converter.translate_to_rows(out)
     result = solver.calc(image_rows)
